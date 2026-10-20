@@ -580,6 +580,21 @@ function renderAll(){
 }
 document.getElementById("applianceDays").addEventListener("change",()=>{renderAll();});
 document.getElementById("billKwh").addEventListener("input",()=>{ /* se guarda con el botón Guardar datos */ });
+
+	
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("./service-worker.js")
+        .then(function () {
+          console.log("Huella Zero: service worker registrado.");
+        })
+        .catch(function (error) {
+          console.error("Error al registrar el service worker:", error);
+        });
+    });
+  }
+
 </script>
 </body>
 </html>'''
