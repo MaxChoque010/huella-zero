@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "huella-zero-v1";
+const CACHE_NAME = "huella-zero-v2";
 
 const ARCHIVOS = [
   "./",
@@ -11,8 +11,19 @@ const ARCHIVOS = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ARCHIVOS);
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const archivo of ARCHIVOS) {
+        const respuesta = await fetch(archivo, { cache: "reload" });
+
+        if (!respuesta.ok) {
+          throw new Error(
+            "No se pudo guardar " + archivo +
+            ". Estado HTTP: " + respuesta.status
+          );
+        }
+
+        await cache.put(archivo, respuesta);
+      }
     })
   );
 
@@ -21,34 +32,29 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((nombres) => {
-      return Promise.all(
+    caches.keys().then((nombres) =>
+      Promise.all(
         nombres
-          .filter((nombre) => nombre !== CACHE_NAME)
+          .filter((nombre) =>
+            nombre.startsWith("huella-zero-") &&
+            nombre !== CACHE_NAME
+          )
           .map((nombre) => caches.delete(nombre))
-      );
-    })
+      )
+    ).then(() => self.clients.claim())
   );
-
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") {
-    return;
-  }
+  if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
 
-  if (url.origin !== self.location.origin) {
-    return;
-  }
+  if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(event.request).then((respuestaCache) => {
-      if (respuestaCache) {
-        return respuestaCache;
-      }
+    caches.match(event.request).then((guardado) => {
+      if (guardado) return guardado;
 
       return fetch(event.request).catch(() => {
         if (event.request.mode === "navigate") {
@@ -60,3 +66,4 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
