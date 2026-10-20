@@ -116,6 +116,27 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
   display: block;
 }
 
+
+	
+/* Aviso legal en la pantalla de acceso */
+.derechos-huella-zero {
+  text-align: center;
+  margin: 28px 10px 12px;
+  padding: 12px 8px;
+  color: #718078;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.derechos-huella-zero p {
+  margin: 3px 0;
+}
+
+.derechos-huella-zero small {
+  font-size: 11px;
+}
+
+	
 	
 </style>
 </head>
@@ -150,7 +171,16 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
     <div class="btn-row"><button class="btn secondary" style="width:100%" onclick="enterGuest()">👤 Continuar como invitado</button></div>
     <p class="help" id="authMessage" aria-live="polite"></p>
     <div class="notice" style="margin-top:15px">Prototipo local para aprender. Las cuentas se guardan solo en este navegador y no son seguras para datos reales. No uses una contraseña importante.</div>
-  </div>
+  
+<!-- Derechos de autor - HUELLA ZERO -->
+<footer class="derechos-huella-zero">
+  <p>© 2026 HUELLA ZERO</p>
+  <p>Todos los derechos reservados.</p>
+  <small>Aplicación educativa sobre consumo energético
+    y sostenibilidad.</small>
+</footer>
+
+	</div>
 </section>
 
 <div id="appShell">
