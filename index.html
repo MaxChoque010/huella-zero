@@ -93,6 +93,30 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
   background: #e8f5ed;
 }
 
+	
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand .logo {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand .logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+	
 </style>
 </head>
 <body>
@@ -131,7 +155,19 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 <div id="appShell">
   <header class="topbar">
-    <div class="brand"><div class="logo">🌿</div><div><h1>Huella Zero</h1><p>Medí. Reducí. Aprendé. Cambiá.</p></div></div>
+    
+
+<div class="brand">
+  <div class="logo">
+    <img src="logo.png" alt="Logo Huella Zero">
+  </div>
+  <div>
+    <h1>Huella Zero</h1>
+    <p>Medí. Reducí. Aprendé. Cambiá.</p>
+  </div>
+</div>
+
+	  
     <div class="top-actions"><span id="welcomeName" style="align-self:center;font-size:13px"></span><button class="btn secondary" onclick="logout()">Salir ↗</button></div>
   </header>
   <div class="layout">
