@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B5E3A">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#176b4d">
+<title>Huella Zero | Medí. Reducí. Aprendé. Cambiá.</title>
+<style>
+:root{
+  --green:#176b4d;--green2:#23845e;--mint:#e8f5ed;--bg:#f3f7f4;
+  --ink:#1d3027;--muted:#607267;--line:#dce8df;--white:#fff;
+  --gold:#e9b949;--red:#b74343;--shadow:0 5px 20px rgba(25,65,43,.07)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Arial,Helvetica,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #e9b949;outline-offset:2px}
+.topbar{background:linear-gradient(125deg,#13563f,var(--green2));color:white;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:#ffffff20;display:grid;place-items:center;font-size:27px}
+.brand h1{font-size:22px;line-height:1.1;margin:0}.brand p{font-size:12px;margin:5px 0 0;color:#e2f2e7}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.layout{display:grid;grid-template-columns:225px minmax(0,1fr);min-height:calc(100vh - 82px)}
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:16px 12px}
+.nav-label{font-size:11px;color:var(--muted);font-weight:bold;text-transform:uppercase;letter-spacing:1px;padding:10px 12px}
+.nav-btn{width:100%;text-align:left;border:0;background:transparent;color:#385145;padding:12px;border-radius:10px;margin:2px 0;display:flex;align-items:center;gap:11px}
+.nav-btn .ico{font-size:20px;width:25px;text-align:center}.nav-btn:hover{background:var(--mint)}.nav-btn.active{background:var(--mint);color:var(--green);font-weight:bold}
+.side-note{font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin-top:18px;padding:16px 10px}
+main{padding:24px;max-width:1250px;width:100%;margin:0 auto}
+.page{display:none}.page.active{display:block}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+h2{font-size:25px;line-height:1.2;margin:0 0 8px}h3{font-size:17px;margin:0 0 12px}h4{margin:0 0 6px}
+.muted{color:var(--muted)}.small{font-size:12px}.eyebrow{font-size:12px;color:var(--green);font-weight:bold;text-transform:uppercase;letter-spacing:.8px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{background:white;border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:var(--shadow);min-width:0}
+.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}
+.metric{display:flex;gap:13px;align-items:center}.metric-icon{width:46px;height:46px;display:grid;place-items:center;background:var(--mint);border-radius:13px;font-size:23px;flex-shrink:0}
+.metric-value{font-size:27px;font-weight:bold;letter-spacing:-.6px;margin-top:3px}.metric-label{font-size:13px;color:var(--muted)}
+.btn{border:0;border-radius:10px;padding:11px 15px;background:var(--green);color:white;font-weight:bold;display:inline-flex;justify-content:center;align-items:center;gap:7px}
+.btn:hover{background:#10533b}.btn.secondary{background:var(--mint);color:var(--green)}.btn.ghost{background:white;color:var(--green);border:1px solid var(--line)}.btn.danger{background:#faeaea;color:var(--red)}
+.btn.small-btn{padding:7px 10px;font-size:12px}.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:bold}
+input,select,textarea{width:100%;border:1px solid #cbdacf;border-radius:9px;padding:10px 11px;background:white;color:var(--ink);min-height:42px}
+input[type=checkbox]{width:auto;min-height:0}
+.help{font-size:12px;color:var(--muted);margin:5px 0 0}
+.notice{background:#fff8e6;border:1px solid #f0dfad;border-radius:12px;padding:12px 14px;color:#6b571d;font-size:13px}
+.success{background:var(--mint);border:1px solid #c8e5d2;border-radius:10px;padding:10px;color:var(--green);font-size:13px}
+.list{display:flex;flex-direction:column;gap:9px}.list-item{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:9px 0}.list-item:last-child{border-bottom:0}
+.tag{display:inline-block;background:var(--mint);color:var(--green);padding:4px 8px;border-radius:999px;font-size:11px;font-weight:bold}
+.progress{height:9px;background:#e4ece6;border-radius:999px;overflow:hidden;margin:8px 0}.progress span{display:block;height:100%;background:var(--green2);width:0%;transition:width .2s}
+.bar-row{display:grid;grid-template-columns:100px minmax(50px,1fr) 75px;align-items:center;gap:10px;font-size:13px;margin:12px 0}.bar{height:10px;background:#e7eee8;border-radius:20px;overflow:hidden}.bar span{display:block;height:100%;background:var(--green2);border-radius:20px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.feature{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fcfefc}.feature .big{font-size:26px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:10px 6px}th{color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top right,#d6eee0,transparent 45%),var(--bg)}
+.auth-card{width:min(460px,100%);background:white;border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:var(--shadow)}
+.auth-brand{text-align:center;margin-bottom:22px}.auth-brand .logo{margin:0 auto 12px;background:var(--mint);color:var(--green);width:66px;height:66px;font-size:35px}
+.auth-brand h1{margin:0;font-size:29px;color:var(--green)}.auth-brand p{margin:5px 0;color:var(--muted)}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:18px}.auth-tab{border:1px solid var(--line);border-radius:9px;padding:10px;background:white;color:var(--green)}.auth-tab.active{background:var(--mint);font-weight:bold;border-color:#b9dcc7}
+#appShell{display:none}.mobile-nav{display:none}
+.empty{color:var(--muted);font-size:13px;padding:12px 0}
+.link-list a{color:var(--green);text-decoration:none}.link-list a:hover{text-decoration:underline}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}main{padding:16px}.mobile-nav{display:flex;position:sticky;bottom:0;background:white;border-top:1px solid var(--line);padding:6px;gap:3px;overflow-x:auto;z-index:5}.mobile-nav .nav-btn{width:auto;min-width:72px;flex-direction:column;gap:2px;padding:7px;font-size:10px;text-align:center}.mobile-nav .nav-btn .ico{font-size:19px}.span-8,.span-6,.span-4,.span-3{grid-column:span 6}}
+@media(max-width:560px){.topbar{padding:14px}.brand h1{font-size:19px}.top-actions .btn{padding:8px 10px;font-size:12px}.page-head{display:block}.grid{gap:11px}.card{padding:15px}.span-8,.span-6,.span-4,.span-3{grid-column:span 12}.form-grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:1fr}.metric-value{font-size:24px}.bar-row{grid-template-columns:80px minmax(35px,1fr) 68px}}
+
+.logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #ffffff20;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.auth-brand .logo {
+  width: 135px;
+  height: 135px;
+  margin: 0 auto 12px;
+  background: #e8f5ed;
+}
+
+</style>
+</head>
+<body>
+
+<section id="authScreen" class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="logo">
+		<img src="logo.png" alt="Logo de Huella Zero">
+      <h1>Huella Zero</h1>
+      <p>Medí. Reducí. Aprendé. Cambiá.</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="setAuthMode('login')">Iniciar sesión</button>
+      <button class="auth-tab" id="tabRegister" onclick="setAuthMode('register')">Crear cuenta</button>
+    </div>
+    <form id="authForm" onsubmit="handleAuth(event)">
+      <div class="field" id="nameField" style="display:none;margin-bottom:12px">
+        <label for="authName">Nombre</label><input id="authName" autocomplete="name" placeholder="Tu nombre">
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="authEmail">Correo electrónico</label><input id="authEmail" type="email" required autocomplete="email" placeholder="nombre@correo.com">
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="authPassword">Contraseña</label><input id="authPassword" type="password" required minlength="4" autocomplete="current-password" placeholder="Ingresá tu contraseña">
+      </div>
+      <button class="btn" style="width:100%" id="authSubmit" type="submit">Ingresar</button>
+    </form>
+    <div class="btn-row"><button class="btn secondary" style="width:100%" onclick="enterGuest()">👤 Continuar como invitado</button></div>
+    <p class="help" id="authMessage" aria-live="polite"></p>
+    <div class="notice" style="margin-top:15px">Prototipo local para aprender. Las cuentas se guardan solo en este navegador y no son seguras para datos reales. No uses una contraseña importante.</div>
+  </div>
+</section>
+
+<div id="appShell">
+  <header class="topbar">
+    <div class="brand"><div class="logo">🌿</div><div><h1>Huella Zero</h1><p>Medí. Reducí. Aprendé. Cambiá.</p></div></div>
+    <div class="top-actions"><span id="welcomeName" style="align-self:center;font-size:13px"></span><button class="btn secondary" onclick="logout()">Salir ↗</button></div>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="nav-label">Mi hogar</div>
+      <button class="nav-btn active" data-page="inicio" onclick="showPage('inicio')"><span class="ico">🏠</span>Inicio</button>
+      <button class="nav-btn" data-page="medir" onclick="showPage('medir')"><span class="ico">➕</span>Cargar datos</button>
+      <button class="nav-btn" data-page="pasaporte" onclick="showPage('pasaporte')"><span class="ico">🏡</span>Pasaporte energético</button>
+      <div class="nav-label">Mejorar</div>
+      <button class="nav-btn" data-page="desafios" onclick="showPage('desafios')"><span class="ico">🏆</span>Desafíos</button>
+      <button class="nav-btn" data-page="renovables" onclick="showPage('renovables')"><span class="ico">☀️</span>Energías renovables</button>
+      <button class="nav-btn" data-page="consejos" onclick="showPage('consejos')"><span class="ico">💡</span>Consejos</button>
+      <button class="nav-btn" data-page="progreso" onclick="showPage('progreso')"><span class="ico">📊</span>Mi progreso</button>
+      <div class="nav-label">Cuenta</div>
+      <button class="nav-btn" data-page="perfil" onclick="showPage('perfil')"><span class="ico">👤</span>Mi perfil</button>
+      <div class="side-note">🌱 Pequeños cambios, grandes resultados.<br><br><span id="modeLabel">Modo invitado</span></div>
+    </aside>
+
+    <main>
+      <section class="page active" id="page-inicio">
+        <div class="page-head"><div><div class="eyebrow">Panel principal</div><h2>¡Hola, <span id="homeName">explorador</span>! 🌱</h2><p class="muted">Este es el resumen de tu hogar. Cargá datos para conocer mejor tu consumo.</p></div><button class="btn" onclick="showPage('medir')">＋ Cargar datos</button></div>
+        <div class="grid">
+          <div class="card span-3"><div class="metric"><div class="metric-icon">⚡</div><div><div class="metric-label">Electricidad registrada</div><div class="metric-value" id="homeKwh">0 kWh</div></div></div><p class="help">Según los equipos cargados.</p></div>
+          <div class="card span-3"><div class="metric"><div class="metric-icon">🌍</div><div><div class="metric-label">CO₂ estimado</div><div class="metric-value" id="homeCo2">0 kg</div></div></div><p class="help">Estimación orientativa.</p></div>
+          <div class="card span-3"><div class="metric"><div class="metric-icon">🌿</div><div><div class="metric-label">Eficiencia orientativa</div><div class="metric-value" id="homeScore">—/100</div></div></div><p class="help">Indicador inicial, no certificación.</p></div>
+          <div class="card span-3"><div class="metric"><div class="metric-icon">☀️</div><div><div class="metric-label">Potencial solar</div><div class="metric-value" id="homeSolar">—</div></div></div><p class="help">Completá los datos del hogar.</p></div>
+          <div class="card span-8"><h3>📈 Tu consumo registrado</h3><div id="homeBars"><p class="empty">Cargá equipos para ver el resumen.</p></div><div class="btn-row"><button class="btn secondary" onclick="showPage('progreso')">Ver mi progreso →</button></div></div>
+          <div class="card span-4"><h3>🎯 Objetivo sugerido</h3><div class="metric-value">−10%</div><p class="muted">Intentá reducir tu consumo respecto de tu período habitual.</p><div class="progress"><span id="goalProgress"></span></div><p class="small muted" id="goalText">Todavía no hay datos suficientes para medir el avance.</p><button class="btn secondary" onclick="showPage('desafios')">Ver desafíos</button></div>
+          <div class="card span-12"><h3>🚀 Accesos rápidos</h3><div class="feature-grid">
+            <div class="feature"><div class="big">➕</div><h4>Medir mi huella</h4><p class="small muted">Registrá electricidad, gas y hábitos.</p><button class="btn secondary small-btn" onclick="showPage('medir')">Empezar</button></div>
+            <div class="feature"><div class="big">🏡</div><h4>Pasaporte energético</h4><p class="small muted">Completá la información de tu vivienda.</p><button class="btn secondary small-btn" onclick="showPage('pasaporte')">Completar</button></div>
+            <div class="feature"><div class="big">☀️</div><h4>Explorar energía solar</h4><p class="small muted">Calculá una producción solar aproximada.</p><button class="btn secondary small-btn" onclick="showPage('renovables')">Explorar</button></div>
+          </div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-medir">
+        <div class="page-head"><div><div class="eyebrow">Medición del hogar</div><h2>➕ Cargar datos</h2><p class="muted">Ingresá tus consumos y hábitos para generar estimaciones.</p></div></div>
+        <div class="grid">
+          <div class="card span-6"><h3>⚡ Electrodomésticos</h3><p class="help">Consumo estimado: potencia (W) × horas/día × cantidad × días ÷ 1000.</p>
+            <form id="applianceForm" onsubmit="addAppliance(event)">
+              <div class="form-grid">
+                <div class="field full"><label for="applianceName">Nombre del equipo</label><input id="applianceName" required placeholder="Ej.: heladera, ventilador"></div>
+                <div class="field"><label for="applianceW">Potencia (W)</label><input id="applianceW" type="number" min="1" max="50000" required placeholder="100"></div>
+                <div class="field"><label for="applianceHours">Horas por día</label><input id="applianceHours" type="number" min="0" max="24" step=".25" required placeholder="6"></div>
+                <div class="field"><label for="applianceQty">Cantidad</label><input id="applianceQty" type="number" min="1" max="100" step="1" value="1" required></div>
+                <div class="field"><label for="applianceDays">Período</label><select id="applianceDays"><option value="1">Diario</option><option value="7">Semanal</option><option value="30" selected>Mensual (30 días)</option><option value="365">Anual</option></select></div>
+              </div>
+              <div class="btn-row"><button class="btn" type="submit">Guardar equipo</button><button class="btn ghost" type="reset">Limpiar campos</button></div>
+            </form>
+            <p id="applianceMessage" class="help" aria-live="polite"></p>
+          </div>
+          <div class="card span-6"><h3>🧾 Consumo de la vivienda</h3><p class="help">Podés cargar el consumo de tu factura para compararlo con el cálculo de equipos.</p>
+            <form id="utilityForm" onsubmit="saveUtilities(event)">
+              <div class="form-grid">
+                <div class="field"><label for="billKwh">Electricidad (kWh)</label><input id="billKwh" type="number" min="0" step=".1" placeholder="Según factura"></div>
+                <div class="field"><label for="billPeriod">Período de factura</label><select id="billPeriod"><option value="30">Mensual (30 días)</option><option value="60">Bimestral (60 días)</option><option value="90">Trimestral (90 días)</option></select></div>
+                <div class="field"><label for="gasM3">Gas natural (m³)</label><input id="gasM3" type="number" min="0" step=".1" placeholder="Si corresponde"></div>
+                <div class="field"><label for="lpg">Garrafa GLP (unidades/mes)</label><input id="lpg" type="number" min="0" step=".5" placeholder="Ej.: 1"></div>
+                <div class="field"><label for="transportKm">Auto/moto (km por semana)</label><input id="transportKm" type="number" min="0" step="1" placeholder="0"></div>
+                <div class="field"><label for="transportType">Combustible principal</label><select id="transportType"><option value="na">No uso auto/moto</option><option value="nafta">Nafta</option><option value="diesel">Diésel</option><option value="gnc">GNC</option><option value="moto">Moto (estimación genérica)</option></select></div>
+                <div class="field"><label for="waste">Residuos</label><select id="waste"><option value="mixed">Principalmente mezclados</option><option value="some">Separo algunos residuos</option><option value="most">Separo y/o composteo gran parte</option></select></div>
+                <div class="field"><label for="diet">Consumo de carne vacuna</label><select id="diet"><option value="often">Frecuente</option><option value="sometimes">Moderado</option><option value="rare">Poco o nada</option></select></div>
+              </div>
+              <div class="btn-row"><button class="btn" type="submit">Guardar datos</button></div>
+            </form>
+            <p id="utilityMessage" class="help" aria-live="polite"></p>
+          </div>
+          <div class="card span-12"><h3>📋 Equipos registrados</h3><div id="applianceList"></div><div class="btn-row"><button class="btn danger" onclick="clearAppliances()">Borrar equipos</button></div></div>
+          <div class="card span-12"><h3>🌍 Resultado estimado</h3><p class="muted">El factor usado para electricidad es ilustrativo y editable en el código. El gas, transporte y hábitos se muestran como aproximaciones educativas, no como un inventario oficial de emisiones.</p><div class="grid"><div class="span-4"><div class="metric-value" id="calcElectric">0 kWh</div><div class="metric-label">Electricidad del período seleccionado</div></div><div class="span-4"><div class="metric-value" id="calcCO2">0 kg CO₂e</div><div class="metric-label">Emisiones indicativas</div></div><div class="span-4"><div class="metric-value" id="calcTransport">0 km</div><div class="metric-label">Transporte semanal informado</div></div></div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-pasaporte">
+        <div class="page-head"><div><div class="eyebrow">Diagnóstico del hogar</div><h2>🏡 Pasaporte energético</h2><p class="muted">Guardá las características básicas de tu vivienda y consultá recomendaciones.</p></div></div>
+        <div class="grid">
+          <div class="card span-6"><h3>Datos de la vivienda</h3>
+            <form id="homeForm" onsubmit="saveHome(event)">
+              <div class="form-grid">
+                <div class="field"><label for="homeType">Tipo de vivienda</label><select id="homeType"><option>Casa</option><option>Departamento</option><option>Otro</option></select></div>
+                <div class="field"><label for="homePeople">Habitantes</label><input id="homePeople" type="number" min="1" max="50" value="2" required></div>
+                <div class="field"><label for="homeArea">Superficie (m²)</label><input id="homeArea" type="number" min="1" max="10000" placeholder="60" required></div>
+                <div class="field"><label for="homeCity">Ciudad / localidad</label><input id="homeCity" placeholder="Ej.: San Salvador de Jujuy"></div>
+                <div class="field"><label for="heating">Calefacción principal</label><select id="heating"><option>Gas natural</option><option>Electricidad</option><option>Leña / biomasa</option><option>Garrafa GLP</option><option>Otra / ninguna</option></select></div>
+                <div class="field"><label for="hotWater">Agua caliente</label><select id="hotWater"><option>Calefón / termotanque a gas</option><option>Termotanque eléctrico</option><option>Solar térmica</option><option>Otra</option></select></div>
+                <div class="field"><label for="lighting">Iluminación principal</label><select id="lighting"><option>LED</option><option>Mixta</option><option>Incandescente / halógena</option><option>No sé</option></select></div>
+                <div class="field"><label for="roofArea">Techo disponible para paneles (m²)</label><input id="roofArea" type="number" min="0" max="10000" placeholder="Ej.: 20"></div>
+                <div class="field"><label for="roofOrientation">Orientación del techo</label><select id="roofOrientation"><option value="north">Norte</option><option value="northeast">Noreste / noroeste</option><option value="eastwest">Este / oeste</option><option value="south">Sur</option><option value="unknown">No sé</option></select></div>
+                <div class="field"><label for="shade">Sombra sobre el techo</label><select id="shade"><option value="low">Poca o ninguna</option><option value="medium">Parcial</option><option value="high">Mucha sombra</option></select></div>
+              </div>
+              <div class="btn-row"><button class="btn" type="submit">Guardar pasaporte</button></div>
+            </form>
+            <p id="homeMessage" class="help" aria-live="polite"></p>
+          </div>
+          <div class="card span-6"><h3>Diagnóstico preliminar</h3><div id="diagnosis"><p class="empty">Completá los datos de la vivienda para ver sugerencias.</p></div><div class="btn-row"><button class="btn secondary" onclick="showPage('consejos')">Ver consejos</button><button class="btn secondary" onclick="showPage('renovables')">Ver potencial solar</button></div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-desafios">
+        <div class="page-head"><div><div class="eyebrow">Pequeños cambios, grandes resultados</div><h2>🏆 Desafíos y objetivos</h2><p class="muted">Elegí acciones simples para convertir el ahorro en un hábito.</p></div></div>
+        <div class="grid">
+          <div class="card span-8"><h3>Desafíos disponibles</h3><div class="list" id="challengeList"></div></div>
+          <div class="card span-4"><h3>Tu recorrido</h3><div class="metric"><div class="metric-icon">🏅</div><div><div class="metric-label">Puntos obtenidos</div><div class="metric-value" id="points">0</div></div></div><p class="muted">Completá un desafío una sola vez para sumar puntos.</p><div class="progress"><span id="challengeProgress"></span></div><p class="small muted" id="challengeCount">0 de 5 desafíos completados</p></div>
+          <div class="card span-12"><h3>🎯 Mi meta de ahorro</h3><div class="form-grid"><div class="field"><label for="targetReduction">Meta de reducción (%)</label><input id="targetReduction" type="number" min="1" max="80" value="10"></div><div class="field"><label for="targetNote">Mi compromiso</label><input id="targetNote" placeholder="Ej.: apagar luces al salir"></div></div><div class="btn-row"><button class="btn" onclick="saveGoal()">Guardar objetivo</button></div><p id="goalMessage" class="help"></p></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-renovables">
+        <div class="page-head"><div><div class="eyebrow">Energía limpia para el hogar</div><h2>☀️ Energías renovables</h2><p class="muted">Aprendé sobre tecnologías limpias y explorá un cálculo solar orientativo.</p></div></div>
+        <div class="grid">
+          <div class="card span-12"><div class="feature-grid">
+            <div class="feature"><div class="big">☀️</div><h4>Solar fotovoltaica</h4><p class="small muted">Convierte la luz solar en electricidad mediante paneles.</p></div>
+            <div class="feature"><div class="big">🚿</div><h4>Solar térmica</h4><p class="small muted">Aprovecha el calor del sol para calentar agua.</p></div>
+            <div class="feature"><div class="big">🌬️</div><h4>Eólica</h4><p class="small muted">Usa el viento para generar electricidad.</p></div>
+            <div class="feature"><div class="big">💧</div><h4>Hidráulica</h4><p class="small muted">Aprovecha el movimiento del agua.</p></div>
+            <div class="feature"><div class="big">🌱</div><h4>Biomasa</h4><p class="small muted">Utiliza materia orgánica como fuente energética.</p></div>
+            <div class="feature"><div class="big">♨️</div><h4>Geotermia</h4><p class="small muted">Aprovecha el calor interno de la Tierra.</p></div>
+          </div></div>
+          <div class="card span-6"><h3>🔆 Calculadora solar simplificada</h3><p class="help">Ingresá el área disponible. La producción real depende de ubicación, orientación, sombras, equipos y diseño técnico.</p>
+            <div class="form-grid">
+              <div class="field"><label for="solarArea">Área útil (m²)</label><input id="solarArea" type="number" min="0" max="10000" placeholder="20"></div>
+              <div class="field"><label for="solarSun">Horas solares pico estimadas por día</label><input id="solarSun" type="number" min="0" max="12" step=".1" value="5"></div>
+              <div class="field"><label for="solarFactor">Factor global de rendimiento</label><select id="solarFactor"><option value=".70">70% (estimación prudente)</option><option value=".75" selected>75% (estimación orientativa)</option><option value=".80">80% (condiciones favorables)</option></select></div>
+            </div>
+            <div class="btn-row"><button class="btn" onclick="calculateSolar()">Calcular producción</button></div><div id="solarResult" class="success" style="margin-top:14px;display:none"></div>
+          </div>
+          <div class="card span-6"><h3>📚 Para seguir aprendiendo</h3><div class="list link-list">
+            <div class="list-item"><div><b>Generación distribuida</b><div class="small muted">Información nacional sobre usuarios-generadores.</div></div><a href="https://www.argentina.gob.ar/economia/energia/generacion-distribuida" target="_blank" rel="noopener">Consultar ↗</a></div>
+            <div class="list-item"><div><b>Ley 27.424</b><div class="small muted">Marco nacional de generación distribuida.</div></div><a href="https://www.argentina.gob.ar/normativa/nacional/ley-27424-305179" target="_blank" rel="noopener">Consultar ↗</a></div>
+            <div class="list-item"><div><b>Secretaría de Energía</b><div class="small muted">Recursos y material de energía.</div></div><a href="https://www.argentina.gob.ar/economia/energia" target="_blank" rel="noopener">Consultar ↗</a></div>
+          </div><p class="help">Verificá requisitos provinciales y con la distribuidora local antes de instalar un sistema.</p></div>
+          <div class="card span-12 notice">La calculadora es educativa y no sustituye un estudio de factibilidad, cálculo eléctrico ni presupuesto de instalación. La conexión a red debe ser evaluada y realizada por personal habilitado.</div>
+        </div>
+      </section>
+
+      <section class="page" id="page-consejos">
+        <div class="page-head"><div><div class="eyebrow">Aprender y actuar</div><h2>💡 Consejos de eficiencia</h2><p class="muted">Ideas sencillas para reducir el consumo y mejorar el confort de la vivienda.</p></div></div>
+        <div class="grid">
+          <div class="card span-6"><h3>🏠 Climatización y aislamiento</h3><ul><li>Sellá filtraciones de aire en puertas y ventanas.</li><li>Usá cortinas o protecciones solares según la estación.</li><li>Ventilá en los horarios más frescos o templados.</li><li>Limpiá filtros y mantené los equipos.</li><li>Elegí temperaturas moderadas y adecuadas al confort.</li></ul></div>
+          <div class="card span-6"><h3>💡 Iluminación y equipos</h3><ul><li>Preferí lámparas LED.</li><li>Aprovechá la luz natural.</li><li>Apagá equipos cuando no se usan.</li><li>Revisá etiquetas de eficiencia al comprar.</li><li>Medí los consumos con datos de factura cuando sea posible.</li></ul></div>
+          <div class="card span-6"><h3>🚿 Agua caliente</h3><ul><li>Revisá pérdidas en grifos y cañerías.</li><li>Evitá calentar agua más de lo necesario.</li><li>Aislá tuberías accesibles cuando sea apropiado.</li><li>Evaluá opciones solares con asesoramiento técnico.</li></ul></div>
+          <div class="card span-6"><h3>♻️ Hábitos sostenibles</h3><ul><li>Separá residuos reciclables limpios y secos.</li><li>Compostá residuos orgánicos si tenés condiciones.</li><li>Planificá traslados y priorizá caminar o transporte público cuando sea viable.</li><li>Repará y reutilizá antes de desechar.</li></ul></div>
+          <div class="card span-12"><h3>🔎 Recursos útiles</h3><div class="list link-list">
+            <div class="list-item"><span>Portal oficial de Ambiente</span><a href="https://www.argentina.gob.ar/ambiente" target="_blank" rel="noopener">Abrir ↗</a></div>
+            <div class="list-item"><span>Secretaría de Energía</span><a href="https://www.argentina.gob.ar/economia/energia" target="_blank" rel="noopener">Abrir ↗</a></div>
+          </div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-progreso">
+        <div class="page-head"><div><div class="eyebrow">Tu evolución</div><h2>📊 Mi progreso</h2><p class="muted">Consultá los registros guardados en este navegador.</p></div><button class="btn secondary" onclick="exportData()">⬇ Exportar datos</button></div>
+        <div class="grid">
+          <div class="card span-4"><div class="metric-label">Equipos registrados</div><div class="metric-value" id="progressEquipment">0</div></div>
+          <div class="card span-4"><div class="metric-label">Consumo calculado</div><div class="metric-value" id="progressKwh">0 kWh</div></div>
+          <div class="card span-4"><div class="metric-label">Desafíos completados</div><div class="metric-value" id="progressChallenges">0/5</div></div>
+          <div class="card span-12"><h3>Resumen de datos actuales</h3><div id="progressSummary" class="list"></div><p class="help">El historial por mes y la comparación antes/después se incorporarán en una próxima versión. Esta primera versión no inventa períodos anteriores.</p></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-perfil">
+        <div class="page-head"><div><div class="eyebrow">Preferencias</div><h2>👤 Mi perfil</h2><p class="muted">Consultá el modo de acceso y los datos de la sesión.</p></div></div>
+        <div class="grid">
+          <div class="card span-6"><h3>Mi cuenta</h3><div id="profileInfo"></div><p class="help">En esta versión las cuentas son locales y no se sincronizan entre dispositivos. No uses datos personales sensibles.</p><div class="btn-row"><button class="btn secondary" onclick="showPage('pasaporte')">Editar datos del hogar</button><button class="btn ghost" onclick="logout()">Cerrar sesión</button></div></div>
+          <div class="card span-6"><h3>Datos y privacidad</h3><p>Los registros de esta versión se guardan en el almacenamiento local del navegador.</p><p class="muted small">Si borrás los datos del sitio o cambiás de navegador o computadora, podrías perderlos. No hay servidor ni copia de seguridad automática.</p><button class="btn danger" onclick="resetAllData()">Borrar todos mis datos locales</button><p id="resetMessage" class="help"></p></div>
+          <div class="card span-12 notice">Huella Zero es una herramienta educativa de estimación. Sus indicadores no son una auditoría energética, certificación ambiental ni asesoramiento profesional.</div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <nav class="mobile-nav" aria-label="Navegación móvil">
+    <button class="nav-btn active" data-page="inicio" onclick="showPage('inicio')"><span class="ico">🏠</span>Inicio</button>
+    <button class="nav-btn" data-page="medir" onclick="showPage('medir')"><span class="ico">➕</span>Datos</button>
+    <button class="nav-btn" data-page="pasaporte" onclick="showPage('pasaporte')"><span class="ico">🏡</span>Pasaporte</button>
+    <button class="nav-btn" data-page="renovables" onclick="showPage('renovables')"><span class="ico">☀️</span>Renovables</button>
+    <button class="nav-btn" data-page="perfil" onclick="showPage('perfil')"><span class="ico">👤</span>Perfil</button>
+  </nav>
+  <footer>Huella Zero · Prototipo educativo · Los resultados son estimaciones.</footer>
+</div>
+
+<script>
+"use strict";
+
+// Factores simplificados únicamente para fines educativos; no usar como cálculo oficial.
+const FACTOR_ELECTRICIDAD = 0.35; // kg CO2e/kWh, supuesto ilustrativo
+const FACTOR_GAS = 2.0;            // kg CO2e/m3, aproximación ilustrativa
+const FACTORES_TRANSPORTE = {na:0, nafta:0.19, diesel:0.17, gnc:0.13, moto:0.09};
+
+let currentUser = null;
+let isGuest = false;
+let state = {appliances:[], utilities:{billKwh:"",billPeriod:30,gasM3:"",lpg:"",transportKm:"",transportType:"na",waste:"mixed",diet:"often"}, home:{}, challenges:[], goal:{reduction:10,note:""}};
+let authMode = "login";
+
+const CHALLENGES = [
+  {id:"lights",icon:"💡",title:"Apagá las luces que no necesitás",desc:"Durante una semana, apagá las luces al salir de cada ambiente.",points:10},
+  {id:"standby",icon:"🔌",title:"Reducí el consumo en espera",desc:"Identificá equipos que quedan encendidos sin necesidad.",points:15},
+  {id:"natural",icon:"🌬️",title:"Aprovechá la ventilación natural",desc:"Ventilá en horarios convenientes según el clima.",points:10},
+  {id:"led",icon:"🌱",title:"Revisá tu iluminación",desc:"Identificá lámparas que podrías reemplazar por LED cuando corresponda.",points:15},
+  {id:"bill",icon:"🧾",title:"Conocé tu consumo real",desc:"Buscá tu factura y registrá el consumo en kWh.",points:20}
+];
+
+function safeRead(key, fallback) {
+  try { const raw=localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+  catch(e) { return fallback; }
+}
+function storageKey() { return currentUser ? "hz_data_" + currentUser.toLowerCase() : "hz_guest_data"; }
+function saveState() {
+  try { localStorage.setItem(storageKey(), JSON.stringify(state)); }
+  catch(e) { console.warn("No se pudieron guardar los datos locales.",e); }
+}
+function loadState() {
+  const saved=safeRead(storageKey(),null);
+  state = saved && typeof saved==="object" ? {
+    appliances:Array.isArray(saved.appliances)?saved.appliances:[],
+    utilities:{billKwh:"",billPeriod:30,gasM3:"",lpg:"",transportKm:"",transportType:"na",waste:"mixed",diet:"often",...(saved.utilities||{})},
+    home:saved.home&&typeof saved.home==="object"?saved.home:{},
+    challenges:Array.isArray(saved.challenges)?saved.challenges:[],
+    goal:{reduction:10,note:"",...(saved.goal||{})}
+  } : {appliances:[],utilities:{billKwh:"",billPeriod:30,gasM3:"",lpg:"",transportKm:"",transportType:"na",waste:"mixed",diet:"often"},home:{},challenges:[],goal:{reduction:10,note:""}};
+}
+function setAuthMode(mode) {
+  authMode=mode;
+  document.getElementById("tabLogin").classList.toggle("active",mode==="login");
+  document.getElementById("tabRegister").classList.toggle("active",mode==="register");
+  document.getElementById("nameField").style.display=mode==="register"?"flex":"none";
+  document.getElementById("authSubmit").textContent=mode==="register"?"Crear cuenta":"Ingresar";
+  document.getElementById("authPassword").autocomplete=mode==="register"?"new-password":"current-password";
+  document.getElementById("authMessage").textContent="";
+}
+function handleAuth(event) {
+  event.preventDefault();
+  const email=document.getElementById("authEmail").value.trim().toLowerCase();
+  const password=document.getElementById("authPassword").value;
+  const name=document.getElementById("authName").value.trim();
+  const users=safeRead("hz_local_users",{});
+  if(authMode==="register") {
+    if(!name){say("authMessage","Ingresá tu nombre para crear la cuenta.");return;}
+    if(users[email]){say("authMessage","Ya existe una cuenta local con ese correo. Probá iniciar sesión.");return;}
+    // Prototipo educativo: contraseña local en texto plano; no es autenticación segura.
+    users[email]={name:name,password:password};
+    try{localStorage.setItem("hz_local_users",JSON.stringify(users));}
+    catch(e){say("authMessage","El navegador no permitió guardar la cuenta.");return;}
+    currentUser=email;isGuest=false;loadState();startApp();
+  } else {
+    if(!users[email]||users[email].password!==password){say("authMessage","No se encontró una cuenta local con esos datos. Creá una cuenta o ingresá como invitado.");return;}
+    currentUser=email;isGuest=false;loadState();startApp();
+  }
+}
+function enterGuest(){currentUser=null;isGuest=true;loadState();startApp();}
+function startApp() {
+  document.getElementById("authScreen").style.display="none";
+  document.getElementById("appShell").style.display="block";
+  const user=safeRead("hz_local_users",{});
+  const name=isGuest?"invitado":((user[currentUser]&&user[currentUser].name)||currentUser.split("@")[0]);
+  document.getElementById("welcomeName").textContent=isGuest?"Modo invitado":name;
+  document.getElementById("homeName").textContent=name;
+  document.getElementById("modeLabel").textContent=isGuest?"Modo invitado · datos locales":"Cuenta local · "+currentUser;
+  fillForms();renderAll();showPage("inicio");
+}
+function logout(){currentUser=null;isGuest=false;document.getElementById("appShell").style.display="none";document.getElementById("authScreen").style.display="grid";document.getElementById("authPassword").value="";say("authMessage","");}
+function say(id,message){const el=document.getElementById(id);if(el)el.textContent=message;}
+function showPage(id) {
+  if(isGuest && ["desafios","progreso","perfil"].includes(id)) {
+    alert("Esta sección estará disponible al crear una cuenta en esta versión de demostración.");
+    return;
+  }
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+id));
+  document.querySelectorAll(".nav-btn[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+  if(id==="progreso")renderProgress();
+  if(id==="perfil")renderProfile();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function applianceKwh(a){return a.w*a.hours*a.qty*a.days/1000;}
+function selectedPeriodDays(){const el=document.getElementById("applianceDays");return el?Number(el.value):30;}
+function totalApplianceKwh(){const days=selectedPeriodDays();return state.appliances.reduce((sum,a)=>sum+applianceKwh({...a,days:days}),0);}
+function totalCO2(){
+  const electric=state.utilities.billKwh!==""?Number(state.utilities.billKwh)*(30/Number(state.utilities.billPeriod||30)):totalApplianceKwh()*(30/selectedPeriodDays());
+  const gas=Number(state.utilities.gasM3||0)*FACTOR_GAS;
+  const km=Number(state.utilities.transportKm||0);
+  const transport=km*(FACTORES_TRANSPORTE[state.utilities.transportType]||0)*4.345;
+  const waste=state.utilities.waste==="mixed"?8:state.utilities.waste==="some"?5:2;
+  const diet=state.utilities.diet==="often"?18:state.utilities.diet==="sometimes"?12:6;
+  return Math.max(0,electric*FACTOR_ELECTRICIDAD+gas+transport+waste+diet);
+}
+function addAppliance(event){
+  event.preventDefault();
+  const name=document.getElementById("applianceName").value.trim();
+  const w=Number(document.getElementById("applianceW").value);
+  const hours=Number(document.getElementById("applianceHours").value);
+  const qty=Number(document.getElementById("applianceQty").value);
+  const days=Number(document.getElementById("applianceDays").value);
+  if(!name||!Number.isFinite(w)||w<=0||hours<0||hours>24||qty<1||!Number.isInteger(qty)){say("applianceMessage","Revisá el nombre, potencia, horas y cantidad.");return;}
+  state.appliances.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name,w,hours,qty,days});
+  saveState();document.getElementById("applianceForm").reset();document.getElementById("applianceQty").value="1";document.getElementById("applianceDays").value=String(days);
+  say("applianceMessage","Equipo guardado en este navegador.");renderAll();
+}
+function removeAppliance(id){state.appliances=state.appliances.filter(a=>a.id!==id);saveState();renderAll();}
+function clearAppliances(){if(!confirm("¿Querés borrar todos los equipos registrados?"))return;state.appliances=[];saveState();renderAll();say("applianceMessage","Se borraron los equipos.");}
+function saveUtilities(event){
+  event.preventDefault();
+  state.utilities={
+    billKwh:document.getElementById("billKwh").value,
+    billPeriod:Number(document.getElementById("billPeriod").value),
+    gasM3:document.getElementById("gasM3").value,
+    lpg:document.getElementById("lpg").value,
+    transportKm:document.getElementById("transportKm").value,
+    transportType:document.getElementById("transportType").value,
+    waste:document.getElementById("waste").value,
+    diet:document.getElementById("diet").value
+  };
+  saveState();say("utilityMessage","Datos de consumo guardados en este navegador.");renderAll();
+}
+function saveHome(event){
+  event.preventDefault();
+  state.home={
+    type:document.getElementById("homeType").value,
+    people:Number(document.getElementById("homePeople").value),
+    area:Number(document.getElementById("homeArea").value),
+    city:document.getElementById("homeCity").value.trim(),
+    heating:document.getElementById("heating").value,
+    hotWater:document.getElementById("hotWater").value,
+    lighting:document.getElementById("lighting").value,
+    roofArea:Number(document.getElementById("roofArea").value||0),
+    roofOrientation:document.getElementById("roofOrientation").value,
+    shade:document.getElementById("shade").value
+  };
+  saveState();say("homeMessage","Pasaporte energético guardado.");renderAll();
+}
+function fillForms(){
+  const u=state.utilities||{};
+  setVal("billKwh",u.billKwh);setVal("billPeriod",u.billPeriod||30);setVal("gasM3",u.gasM3);setVal("lpg",u.lpg);setVal("transportKm",u.transportKm);setVal("transportType",u.transportType||"na");setVal("waste",u.waste||"mixed");setVal("diet",u.diet||"often");
+  const h=state.home||{};
+  setVal("homeType",h.type||"Casa");setVal("homePeople",h.people||2);setVal("homeArea",h.area||"");setVal("homeCity",h.city||"");setVal("heating",h.heating||"Gas natural");setVal("hotWater",h.hotWater||"Calefón / termotanque a gas");setVal("lighting",h.lighting||"LED");setVal("roofArea",h.roofArea||"");setVal("roofOrientation",h.roofOrientation||"north");setVal("shade",h.shade||"low");
+  setVal("targetReduction",state.goal.reduction||10);setVal("targetNote",state.goal.note||"");
+  setVal("solarArea",h.roofArea||"");
+}
+function setVal(id,value){const el=document.getElementById(id);if(el&&value!==undefined&&value!==null)el.value=value;}
+function renderAppliances(){
+  const container=document.getElementById("applianceList");
+  if(!state.appliances.length){container.innerHTML='<p class="empty">Todavía no cargaste equipos. Probá con un ventilador de 100 W durante 6 horas al día.</p>';return;}
+  const days=selectedPeriodDays();
+  container.innerHTML=state.appliances.map(a=>{
+    const kwh=applianceKwh({...a,days});
+    return '<div class="list-item"><div><b>'+escapeHtml(a.name)+'</b><div class="small muted">'+a.w+' W · '+a.hours+' h/día · '+a.qty+' equipo(s) · '+days+' días</div></div><div style="text-align:right"><b>'+kwh.toFixed(2)+' kWh</b><br><button class="btn danger small-btn" onclick="removeAppliance(\''+a.id+'\')">Quitar</button></div></div>';
+  }).join("");
+}
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function renderDiagnosis(){
+  const h=state.home||{};const el=document.getElementById("diagnosis");
+  if(!h.area){el.innerHTML='<p class="empty">Completá la superficie y los datos del hogar para ver sugerencias.</p>';document.getElementById("homeSolar").textContent="—";return;}
+  let tips=[];
+  if(h.lighting&&h.lighting!=="LED")tips.push("Revisá si podés reemplazar lámparas antiguas por LED.");
+  if(h.heating==="Electricidad")tips.push("Controlá el uso de calefactores eléctricos y mejorá el aislamiento de la vivienda.");
+  if(h.shade==="low"&&h.roofArea>0)tips.push("El techo informado podría ser apto para una evaluación solar técnica.");
+  if(h.shade==="high")tips.push("La sombra puede reducir la generación solar: evaluá el techo con un profesional.");
+  if(!tips.length)tips.push("Seguí registrando consumos y revisá los hábitos de climatización, iluminación y agua caliente.");
+  el.innerHTML='<p><span class="tag">'+escapeHtml(h.type||"Vivienda")+'</span> <span class="tag">'+h.area+' m²</span> <span class="tag">'+(h.people||"—")+' habitantes</span></p><ul>'+tips.map(t=>'<li>'+escapeHtml(t)+'</li>').join("")+'</ul><p class="small muted">Diagnóstico inicial automático, no auditoría profesional.</p>';
+  document.getElementById("homeSolar").textContent=h.roofArea>0?(h.roofArea+" m²"):"—";
+}
+function renderChallenges(){
+  const list=document.getElementById("challengeList");
+  list.innerHTML=CHALLENGES.map(c=>{
+    const done=state.challenges.includes(c.id);
+    return '<div class="list-item"><div style="display:flex;gap:11px;align-items:flex-start"><div style="font-size:24px">'+c.icon+'</div><div><b>'+c.title+'</b><div class="small muted">'+c.desc+'</div><span class="tag">+'+c.points+' puntos</span></div></div><button class="btn '+(done?'secondary':'')+' small-btn" '+(done?'disabled':'')+' onclick="completeChallenge(\''+c.id+'\')">'+(done?'✓ Listo':'Completar')+'</button></div>';
+  }).join("");
+  const count=state.challenges.length;const points=CHALLENGES.filter(c=>state.challenges.includes(c.id)).reduce((s,c)=>s+c.points,0);
+  document.getElementById("points").textContent=points;document.getElementById("challengeProgress").style.width=(count/CHALLENGES.length*100)+"%";document.getElementById("challengeCount").textContent=count+" de "+CHALLENGES.length+" desafíos completados";
+}
+function completeChallenge(id){if(!state.challenges.includes(id)){state.challenges.push(id);saveState();renderAll();}}
+function saveGoal(){
+  const reduction=Number(document.getElementById("targetReduction").value);
+  if(reduction<1||reduction>80){say("goalMessage","Elegí una meta entre 1 % y 80 %.");return;}
+  state.goal={reduction,note:document.getElementById("targetNote").value.trim()};saveState();say("goalMessage","Objetivo guardado.");renderAll();
+}
+function calculateSolar(){
+  const area=Number(document.getElementById("solarArea").value);
+  const sun=Number(document.getElementById("solarSun").value);
+  const factor=Number(document.getElementById("solarFactor").value);
+  const result=document.getElementById("solarResult");
+  if(area<=0||sun<=0||sun>12){result.style.display="block";result.textContent="Ingresá un área mayor que cero y entre 0 y 12 horas solares pico.";return;}
+  // Supuesto didáctico: 1 m² útil ≈ 0.20 kWp; no es dimensionamiento real.
+  const kwp=area*.20;
+  const daily=kwp*sun*factor;
+  result.style.display="block";
+  result.innerHTML="<b>Estimación educativa:</b><br>Potencia posible aproximada: "+kwp.toFixed(2)+" kWp.<br>Generación: "+daily.toFixed(1)+" kWh/día o "+(daily*30).toFixed(0)+" kWh/mes promedio.<br><span class='small'>Supone 0,20 kWp/m² útil y rendimiento "+Math.round(factor*100)+" %. No considera sombras reales, inclinación, pérdidas específicas ni límites de conexión.</span>";
+}
+function renderProgress(){
+  document.getElementById("progressEquipment").textContent=state.appliances.length;
+  document.getElementById("progressKwh").textContent=totalApplianceKwh().toFixed(2)+" kWh";
+  document.getElementById("progressChallenges").textContent=state.challenges.length+"/5";
+  const h=state.home||{},u=state.utilities||{};
+  const rows=[
+    ["Vivienda",h.type||"Sin completar"],
+    ["Superficie",h.area?h.area+" m²":"Sin completar"],
+    ["Habitantes",h.people||"Sin completar"],
+    ["Electricidad de factura",u.billKwh!==""&&u.billKwh!=null?u.billKwh+" kWh por "+u.billPeriod+" días":"No ingresada"],
+    ["Gas natural",u.gasM3?u.gasM3+" m³":"No ingresado"],
+    ["Transporte",u.transportKm?u.transportKm+" km por semana":"No ingresado"],
+    ["Desafíos",state.challenges.length+" completados"]
+  ];
+  document.getElementById("progressSummary").innerHTML=rows.map(r=>'<div class="list-item"><span class="muted">'+r[0]+'</span><b>'+escapeHtml(r[1])+'</b></div>').join("");
+}
+function renderProfile(){
+  const users=safeRead("hz_local_users",{});
+  const user=users[currentUser]||{};
+  document.getElementById("profileInfo").innerHTML='<div class="list"><div class="list-item"><span class="muted">Modo</span><b>'+(isGuest?"Invitado":"Cuenta local")+'</b></div><div class="list-item"><span class="muted">Nombre</span><b>'+escapeHtml(isGuest?"Invitado":(user.name||"Usuario"))+'</b></div><div class="list-item"><span class="muted">Correo</span><b>'+escapeHtml(isGuest?"No registrado":currentUser)+'</b></div></div>';
+}
+function resetAllData(){
+  if(!confirm("Esto borrará los datos de Huella Zero guardados en este navegador para la sesión actual. ¿Continuar?"))return;
+  state={appliances:[],utilities:{billKwh:"",billPeriod:30,gasM3:"",lpg:"",transportKm:"",transportType:"na",waste:"mixed",diet:"often"},home:{},challenges:[],goal:{reduction:10,note:""}};
+  saveState();fillForms();renderAll();say("resetMessage","Se borraron los datos de esta sesión.");
+}
+function exportData(){
+  const blob=new Blob([JSON.stringify({exportado:new Date().toISOString(),appliances:state.appliances,utilities:state.utilities,home:state.home,challenges:state.challenges,goal:state.goal},null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="huella-zero-datos.json";a.click();URL.revokeObjectURL(url);
+}
+function renderHome(){
+  const kwh=totalApplianceKwh();const co2=totalCO2();
+  document.getElementById("homeKwh").textContent=kwh.toFixed(1)+" kWh";
+  document.getElementById("homeCo2").textContent=co2.toFixed(1)+" kg";
+  const h=state.home||{};
+  let score=null;
+  if(h.area){
+    score=50;
+    if(h.lighting==="LED")score+=15;
+    if(h.shade==="low")score+=5;
+    if(state.appliances.length>0)score+=10;
+    if(state.utilities.billKwh!==""&&state.utilities.billKwh!=null)score+=5;
+    score=Math.min(100,score);
+  }
+  document.getElementById("homeScore").textContent=score===null?"—/100":score+"/100";
+  const bars=document.getElementById("homeBars");
+  if(!state.appliances.length){bars.innerHTML='<p class="empty">Cargá equipos en la sección “Cargar datos” para ver el resumen.</p>';}
+  else{
+    const items=state.appliances.map(a=>({name:a.name,kwh:applianceKwh({...a,days:selectedPeriodDays()})}));
+    const max=Math.max(...items.map(i=>i.kwh),1);
+    bars.innerHTML=items.slice(0,8).map(i=>'<div class="bar-row"><span>'+escapeHtml(i.name)+'</span><div class="bar"><span style="width:'+Math.min(100,i.kwh/max*100)+'%"></span></div><b>'+i.kwh.toFixed(1)+' kWh</b></div>').join("");
+  }
+  document.getElementById("goalProgress").style.width=(state.challenges.length/CHALLENGES.length*100)+"%";
+  document.getElementById("goalText").textContent=state.challenges.length?state.challenges.length+" de 5 desafíos completados. ¡Seguí avanzando!":"El avance se muestra por desafíos completados, no por una reducción de consumo medida.";
+}
+function renderCalculations(){
+  document.getElementById("calcElectric").textContent=totalApplianceKwh().toFixed(2)+" kWh";
+  document.getElementById("calcCO2").textContent=totalCO2().toFixed(1)+" kg CO₂e";
+  document.getElementById("calcTransport").textContent=Number(state.utilities.transportKm||0)+" km";
+}
+function renderAll(){
+  renderAppliances();renderDiagnosis();renderChallenges();renderHome();renderCalculations();renderProgress();
+}
+document.getElementById("applianceDays").addEventListener("change",()=>{renderAll();});
+document.getElementById("billKwh").addEventListener("input",()=>{ /* se guarda con el botón Guardar datos */ });
+</script>
+</body>
+</html>'''
+
+out = Path("/mnt/data/HuellaZero_completo.html")
+out.write_text(html, encoding="utf-8")
+print(f"Archivo creado: {out}")
+print(f"Tamaño: {out.stat().st_size:,} bytes")
